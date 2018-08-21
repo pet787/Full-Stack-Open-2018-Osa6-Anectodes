@@ -17,25 +17,32 @@ class AnecdoteList extends React.Component {
     this.showNotification( 'You voted anecdote \'' + anecdote.content + '\'')
   }
 
+  filterAnecdotes = (mask) => (anecdote) => {
+    return (anecdote.content.search(mask) >= 0 )
+  }
+
   render() {
-    const { anecdotes } = this.props.store.getState()
+    const { anecdotes, filter } = this.props.store.getState()
     return (
       <div>
         <h2>Anecdotes</h2>
-        {anecdotes.sort((a, b) => b.votes - a.votes).map( anecdote =>
-          <div key={anecdote.id}>
-            <div>
-              {anecdote.content}
-            </div>
-            <div>
+        {anecdotes
+          .filter(this.filterAnecdotes(filter))
+          .sort((a, b) => b.votes - a.votes)
+          .map( anecdote =>
+            <div key={anecdote.id}>
+              <div>
+                {anecdote.content}
+              </div>
+              <div>
               has {anecdote.votes}
-              <button onClick={ this.handleVote( anecdote ) }
-              >
+                <button onClick={ this.handleVote( anecdote ) }
+                >
                 vote
-              </button>
+                </button>
+              </div>
             </div>
-          </div>
-        )}
+          )}
       </div>
     )
   }
