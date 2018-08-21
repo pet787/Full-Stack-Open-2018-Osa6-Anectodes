@@ -1,8 +1,24 @@
 const initialState = 'default notification'
 
 const notificationReducer = (store = initialState, action) => {
-  console.log('notificationReducer: ', action)
-  return store
+  switch (action.type) {
+  case 'SET': return action.note
+  case 'CLEAR': return ''
+  default: return store
+  }
+}
+
+export const setNotification = ( message ) => {
+  return {
+    type: 'SET',
+    note: message
+  }
+}
+
+export const clearNotification = ( ) => {
+  return {
+    type: 'CLEAR'
+  }
 }
 
 export default notificationReducer
