@@ -9,7 +9,7 @@ const anecdotesAtStart = [
 
 const getId = () => (100000*Math.random()).toFixed(0)
 
-const asObject = (anecdote) => {
+const asObject = ( anecdote ) => {
   return {
     content: anecdote,
     id: getId(),
@@ -19,7 +19,8 @@ const asObject = (anecdote) => {
 
 const initialState = anecdotesAtStart.map(asObject)
 
-const reducer = (store = initialState, action) => {
+const anecdoteReducer = (store = initialState, action) => {
+  console.log('anecdoteReducer: ', action)
   if (action.type==='VOTE') {
     const old = store.filter(a => a.id !==action.id)
     const voted = store.find(a => a.id === action.id)
@@ -27,25 +28,24 @@ const reducer = (store = initialState, action) => {
     return [...old, { ...voted, votes: voted.votes + 1 } ]
   }
   if (action.type === 'CREATE') {
-
-    return [...store, { content: action.content, id: getId(), votes:0 }]
+    return [...store, { content: action.content, id: getId(), votes:0 } ]
   }
 
   return store
 }
 
-export const voteAnecdote = (id) => {
+export const voteAnecdote = ( id ) => {
   return {
     type: 'VOTE',
     id
   }
 }
 
-export const createAnecdote = (content) => {
+export const createAnecdote = ( content ) => {
   return {
     type: 'CREATE',
     content
   }
 }
 
-export default reducer
+export default anecdoteReducer
