@@ -1,4 +1,4 @@
-const initialState = 'default notification'
+const initialState = 'Application started'
 
 const notificationReducer = (store = initialState, action) => {
   switch (action.type) {
