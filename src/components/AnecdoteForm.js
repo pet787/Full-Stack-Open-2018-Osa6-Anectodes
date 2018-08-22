@@ -1,23 +1,16 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { createAnecdote } from '../reducers/anecdoteReducer'
-import { setNotification, clearNotification } from '../reducers/notificationReducer'
+import { notify } from '../reducers/notificationReducer'
 
 class AnecdoteForm extends React.Component {
-
-  showNotification = ( message ) => {
-    this.props.setNotification( message )
-    setTimeout(() => {
-      this.props.clearNotification()
-    }, 5000)
-  }
 
   handleSubmit = async (event) => {
     event.preventDefault()
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
     this.props.createAnecdote( content )
-    this.showNotification( 'You added anecdote \'' + content + '\'' )
+    this.props.notify( 'You added anecdote \'' + content + '\'', 5 )
   }
 
   render() {
@@ -35,5 +28,5 @@ class AnecdoteForm extends React.Component {
 
 export default connect(
   null,
-  { createAnecdote, setNotification, clearNotification }
+  { createAnecdote, notify }
 )(AnecdoteForm)
