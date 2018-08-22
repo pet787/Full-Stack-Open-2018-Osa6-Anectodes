@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { voteAnecdote } from '../reducers/anecdoteReducer'
 import { setNotification, clearNotification } from '../reducers/notificationReducer'
+import Filter from './Filter'
 
 class AnecdoteList extends React.Component {
 
@@ -18,18 +19,12 @@ class AnecdoteList extends React.Component {
     this.showNotification( 'You voted anecdote \'' + anecdote.content + '\'')
   }
 
-  filterAnecdotes = (mask) => (anecdote) => {
-    return (anecdote.content.search(mask) >= 0 )
-  }
-
   render() {
-    const { anecdotes, anecdoteFilter } = this.props
     return (
       <div>
         <h2>Anecdotes</h2>
-        {anecdotes
-          .filter(this.filterAnecdotes(anecdoteFilter))
-          .sort((a, b) => b.votes - a.votes)
+        <Filter />
+        { this.props.filteredAnecdotes
           .map( anecdote =>
             <div key={anecdote.id}>
               <div>
@@ -49,10 +44,15 @@ class AnecdoteList extends React.Component {
   }
 }
 
+const giveFilteredAnecdotes = (anecdotes, filter) => {
+  return anecdotes
+    .filter(anecdote => anecdote.content.search( filter ) >= 0 )
+    .sort((a, b) => b.votes - a.votes)
+}
+
 const mapStateToProps = (state) => {
   return {
-    anecdotes: state.anecdotes,
-    anecdoteFilter: state.anecdoteFilter
+    filteredAnecdotes: giveFilteredAnecdotes(state.anecdotes, state.anecdoteFilter )
   }
 }
 
