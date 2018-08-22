@@ -1,3 +1,4 @@
+/*
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -6,9 +7,11 @@ const anecdotesAtStart = [
   'Premature optimization is the root of all evil.',
   'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
 ]
+*/
 
-const getId = () => (100000*Math.random()).toFixed(0)
+//const getId = () => (100000*Math.random()).toFixed(0)
 
+/*
 const asObject = ( anecdote ) => {
   return {
     content: anecdote,
@@ -18,8 +21,8 @@ const asObject = ( anecdote ) => {
 }
 
 const initialState = anecdotesAtStart.map(asObject)
-
-const anecdoteReducer = (store = initialState, action) => {
+*/
+const anecdoteReducer = (store =[], action) => {
   if (action.type==='VOTE') {
     const old = store.filter(a => a.id !==action.id)
     const voted = store.find(a => a.id === action.id)
@@ -27,9 +30,11 @@ const anecdoteReducer = (store = initialState, action) => {
     return [...old, { ...voted, votes: voted.votes + 1 } ]
   }
   if (action.type === 'CREATE') {
-    return [...store, { content: action.content, id: getId(), votes:0 } ]
+    return [...store, action.data ]
   }
-
+  if (action.type === 'INIT') {
+    return action.data
+  }
   return store
 }
 
@@ -40,11 +45,19 @@ export const voteAnecdote = ( id ) => {
   }
 }
 
-export const createAnecdote = ( content ) => {
+export const createAnecdote = ( data ) => {
   return {
     type: 'CREATE',
-    content
+    data
   }
 }
+
+export const anecdotesInitialization = (data) => {
+  return {
+    type: 'INIT',
+    data
+  }
+}
+
 
 export default anecdoteReducer
